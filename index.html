@@ -2,17 +2,147 @@
 	<head>
 		<script src="js/mail-generator.js"></script>
 		<link href="css/style.css" rel="stylesheet" media="screen">
+		<title>GeeMail</title>
+		<link rel="icon" href="https://cdn4.iconfinder.com/data/icons/free-colorful-icons/360/gmail.png" type="image/gif" sizes="16x16">
+		<!--Author: Justen Nakamoto-->
+
     <script>
       window.onload = function(){
-        // ALL OF YOUR JAVASCRIPT CODE SHOULD GO HERE. 
+        // ALL OF YOUR JAVASCRIPT CODE SHOULD GO HERE.
         // We have to use window.onload so your JavaScript doesn't execute until the page has loaded and all HTML has been downloaded to your browser
-        
+       
+        // Displaying the Email messages
+        function generateEmail(messages){
+      		for(var i = 0; i < messages.length; i++){
+	            var emailElement = document.createElement('div');
+	            emailElement.className = "email";
+	            document.getElementById('main').appendChild(emailElement);
+
+	            var senderElement = document.createElement('div');
+	            senderElement.className = "sender";
+	            senderElement.innerHTML = messages[i].sender;
+	            emailElement.appendChild(senderElement);
+
+	            var subjectElement = document.createElement('div');
+	            subjectElement.className = "subject";
+	            subjectElement.innerHTML = messages[i].subject;
+	            emailElement.appendChild(subjectElement);
+
+	            var dateElement = document.createElement('div');
+	            dateElement.className = "date";
+	            dateElement.innerHTML = messages[i].date;
+	            emailElement.appendChild(dateElement);
+
+	            var bodyElement = document.createElement('div');
+	            bodyElement.className = "body";
+	            bodyElement.innerHTML = messages[i].body;
+	            emailElement.appendChild(bodyElement);
+	            bodyElement.style.display = "none";
+      		}
+      	}
+ 		generateEmail(geemails);
+
+ 		// Show or Hide the body of the email by clicking on message
+ 		var emailElements = document.getElementsByClassName('email');
+		for (var i = 0; i<emailElements.length; i++){
+		  emailElements[i].addEventListener('click', showMessage);
+		  emailElements[i].addEventListener('click', messageRead);
+		}
+		function showMessage(){
+		  var msg = this.querySelectorAll('.body')[0];
+		  if(msg.style.display==='none'){
+		    msg.style.display = 'block';
+		  }else{
+		    msg.style.display = 'none';
+		  }
+		}
+		// Changes the background color and font weight so it is like the message is read
+		function messageRead(){
+			var read = document.getElementsByClassName('email');
+			//var unreadCount = unreadMessages.innerHTML;
+			for(var i = 0; i < read.length; i++){
+				this.style.backgroundColor = "#F0F0F0";
+				this.style.fontWeight = "normal";
+				//unreadCount--;
+				//unreadMessages.innerHTML = unreadCount;
+			}
+		}
+		// Creates the count of the inbox
+		var emailInbox = document.getElementById("count");
+		emailInbox.innerHTML = geemails.length;
+
+		//var unreadMessages = document.getElementById("unreadCount");
+		//unreadMessages.innerHTML = geemails.length;
+
+		// Sets how many seconds incoming emails are added into inbox, (10000 = 10 seconds)
+		setInterval(incomingEmails,10000);
+		function incomingEmails(){
+			var mailElements = document.getElementsByClassName('email');
+			var newEmail = getNewMessage();
+
+			// Increase inbox count by 1 every time an email gets added
+			var count = emailInbox.innerHTML;
+			count++;
+			emailInbox.innerHTML = count;
+
+
+			//var unreadCount = unreadMessages.innerHTML;
+			//unreadCount++;
+			//unreadMessages.innerHTML = unreadCount;
+
+			// Creates and displays new emails inside the inbox by inserting it into a div
+			var emailElement = document.createElement('div');
+	        emailElement.className = "email";
+	        
+	        // New emails are added to the top of the list
+	        document.getElementById('main').insertBefore(emailElement,mailElements[0]);
+
+	        var senderElement = document.createElement('div');
+	        senderElement.className = "sender";
+	        senderElement.innerHTML = newEmail.sender;
+            emailElement.appendChild(senderElement);
+
+	        var subjectElement = document.createElement('div');
+	        subjectElement.className = "subject";
+            subjectElement.innerHTML = newEmail.subject;
+            emailElement.appendChild(subjectElement);
+
+            var dateElement = document.createElement('div');
+            dateElement.className = "date";
+            dateElement.innerHTML = newEmail.date;
+            emailElement.appendChild(dateElement);
+
+            var bodyElement = document.createElement('div');
+            bodyElement.className = "body";
+            bodyElement.innerHTML = newEmail.body;
+            emailElement.appendChild(bodyElement);
+            bodyElement.style.display = "none";
+
+            var newEmailElements = document.getElementsByClassName('email');
+            for (var i = 0; i<emailElements.length; i++){
+		  		newEmailElements[i].addEventListener('click', showMessage);
+		  		newEmailElements[i].addEventListener('click', messageRead);
+			}
+		}
       };
     </script>
 	</head>
 	<body>
-		<div class="container" id="main">
-			Build Me!
+		<div id="main">
+			<h1>Gee Mail</h1>
+			<img src="https://cdn4.iconfinder.com/data/icons/free-colorful-icons/360/gmail.png" style= "width:50px;height:50px;">
 		</div>
+		<div id="inbox">
+			<h4>Inbox:</h4>
+			<h4 id="count"></h4>
+			<!--<button type="button">Compose</button> -->
+		</div>
+		</div>
+		<br>
+		<div id="unreadMessages">
+			<h4>Unread Messages:</h4>
+			<h4 id="unreadCount"></h4>
+		</div>
+    </form>
 	</body>
 </html>
